@@ -1,0 +1,9 @@
+test.json
+scrapinghub.yml
+setup.py
+project.egg-info
+__pycache__
+*.pyc
+build
+.scrapy
+

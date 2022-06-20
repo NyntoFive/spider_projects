@@ -1,0 +1,11 @@
+# DISABLE_DASH_EGGS
+
+# This requirements.txt file has been automatically generated
+# from project's 599292 eggs.
+# When in use, we are going to disable your eggs added to dash.
+# To enable them back, remove the above marker (the line saying
+# '# DISABLE_DASH_EGGS').
+shub
+arrow
+requests-html
+
