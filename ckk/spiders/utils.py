@@ -35,8 +35,6 @@ def new_load_urls(url="https://knifekits.com/vcom/smproducts.xml", urls=False, s
         return txt[1::2]
     return page
 
-
-
 def remove_html(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
@@ -54,22 +52,7 @@ def clean_description(desc):
     tmp = desc.replace("\t","").split('\r\n')
     new = [t.strip() for t in tmp]
     return new
-def cleanup_description(s):
-    """ Takes a string and cleans it by removing newline, tab and whitespace.
-    @param s: Any string
-    @return: Cleaned up string
-    """
-    if s:
-        r=[line.replace('\t','') for line in s]
-        tmp=" ".join(r)
 
-
-        r = '\r\n'.join([x.strip() for x in r])
-        if r:
-            r = r.replace('\xa0', ' ')  # &nbsp to space
-        return r
-    else:
-        return None
 fields={
     "link": '//*[@rel="canonical"]/@href',
     "sku": '//span[@itemprop="model"]/descendant-or-self::text()',
@@ -88,30 +71,3 @@ list_fields = {
     "discount_tiers": './/*[@class="DiscountPriceQty"]/descendant-or-self::text()',
     "discount_amount": './/*[@class="DiscountPrice"]/descendant-or-self::text()'
 }
-
-
-def alternate_parse(self, response):
-        base_url = "https://" + response.url.split('/')[2]+"/vcom/"
-        item = CrawlerItem()
-        item["link"] = response.xpath('//*[@rel="canonical"]/@href').get()
-        item["sku"] = response.xpath('//span[@itemprop="model"]/descendant-or-self::text()').get()
-        item["name"] = response.xpath('//h1/descendant::span[@itemprop="name"]/text()').get()
-        item["main_image"] = response.xpath('//div[@class="piGalMain"]/img/@src').get()
-        item["products_id"] = response.xpath('//input[@name="products_id"]/@value').get()
-        item["title"] = response.xpath("/html/head/title/text()").get()
-        item["keywords"] = response.xpath('.//meta[@name="keywords"]/@content').get()
-        item["short_desc"] = response.xpath('//meta[@name="description"]/@content').get()
-        item["price"] = response.xpath('.//*[@itemprop="price"]/text()').get().replace('$','')
-        item["description"] = response.xpath('//div[@itemprop="description"]').get()
-        image_urls = [base_url+img for img in response.xpath('//*[@class="thumbnail"]/@data-image').getall()]
-        bcrumbs = response.xpath('.//*[@class="breadcrumb"]/descendant-or-self::text()').getall()
-        discount_tiers=response.xpath('.//*[@class="DiscountPriceQty"]/descendant-or-self::text()').getall()
-        discount_amount=response.xpath('.//*[@class="DiscountPrice"]/descendant-or-self::text()').getall()
-        item['image_urls'] = image_urls
-        item['breadcrumbs'] = bcrumbs[::2]
-        if len(discount_amount) >= 1 or len(discount_tiers) >= 1:
-            item['discount_tiers'] = discount_tiers
-            item['discount_amount'] = discount_amount
-        if item['main_image'].startswith('images/'):
-            item['main_image']=base_url + item['main_image']
-        yield item

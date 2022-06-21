@@ -4,13 +4,21 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 import os
 import json
-import pymongo
-# useful for handling different eitem types with a single interface
+from ckk.items import SpiderItem, KnifekitsItem
+
 import scrapy
-# from itemadapter import ItemAdapter
-# from scrapy.exceptions import DropItem
-# from scrapy.pipelines.images import ImagesPipeline
-from crawler.items import ScrapyItem
+# useful for handling different eitem types with a single interface
+from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
+from scrapy.pipelines.files import FilesPipeline
+from urllib.parse import urlparse
+
+
+class MyFilesPipeline(FilesPipeline):
+
+    def file_path(self, request, response=None, info=None, *, item=None):
+        return 'files/' + os.path.basename(urlparse(request.url).path)
+
 
 # class MongoPipeline:
 #     collection_name = "scrapy_djangoitems"
@@ -37,9 +45,17 @@ from crawler.items import ScrapyItem
 #         self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
 #         return item
 
-class DjangoPipeline:
-    '''This doesn't do much...'''
-    def process_item(self, item, spider):
-        new = ScrapyItem(**item)
-        new.save()
-        return item
+# class DjangoPipeline:
+#     '''This doesn't do much...'''
+#     def process_item(self, item, spider):
+#         new = ScrapyItem(**item)
+#         new.save()
+#         return item
+# class KnifeImage(BaseModel):
+#     filename = str
+#     link = HttpUrl
+
+class ValidationPipeline:
+    '''Validate items agains schema'''
+    
+   

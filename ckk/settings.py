@@ -13,17 +13,17 @@ SPIDER_MODULES = ['ckk.spiders']
 NEWSPIDER_MODULE = 'ckk.spiders'
 ROBOTSTXT_OBEY = True
 # USER_AGENT = '  "Googlebot/2.1 (+http://www.google.com/bot.html)"'
-# DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-# }
+DEFAULT_REQUEST_HEADERS = {
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'en',
+}
 # AUTOUNIT_ENABLED = True
 # DOWNLOADER_MIDDLEWARES = {
 #    'crawler.middlewares.CrawlerDownloaderMiddleware': 543,
 # }
-# ITEM_PIPELINES = {
-#   'crawler.pipelines.DjangoPipeline': 400,
-# }
+ITEM_PIPELINES = {
+  'ckk.pipelines.ValidationPipeline': 400,
+}
 
 AUTOTHROTTLE_ENABLED = True
 # The initial download delay
